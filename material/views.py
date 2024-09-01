@@ -93,3 +93,5 @@ def mergePDF(writer, type: str, supabase, data):
             reader = PdfReader(filename)
             for page in reader.pages:
                 writer.add_page(page)
+
+            os.remove(filename)
