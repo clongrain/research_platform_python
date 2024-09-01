@@ -27,28 +27,19 @@ class SupabaseClientSingleton:
         return SupabaseClientSingleton._instance
 
 
+
 # Create your views here.
 def generateMaterial(request):
     data = json.loads(request.body)
     order = data['order']
-    type = data['materialType']
+
     writer = PdfWriter()
-    if type.__eq__('成果报奖'):
-        reader = PdfReader('成果报奖.pdf')
-        for page in reader.pages:
-            writer.add_page(page)
-    elif type.__eq__('年度总结'):
-        reader = PdfReader('年度总结.pdf')
-        for page in reader.pages:
-            writer.add_page(page)
-    elif type.__eq__('职称评定'):
-        reader = PdfReader('职称评定.pdf')
-        for page in reader.pages:
-            writer.add_page(page)
-    elif type.__eq__('项目结题'):
-        reader = PdfReader('项目结题.pdf')
-        for page in reader.pages:
-            writer.add_page(page)
+    pdfTemplate = select_pdf_template(data['materialType'])
+    if not pdfTemplate:
+        return HttpResponse("Invalid material type", status=400)
+    reader = PdfReader(pdfTemplate)
+    for page in reader.pages:
+        writer.add_page(page)
 
     supabase = SupabaseClientSingleton.get_instance()
     supabase.auth.sign_in_with_password(
@@ -95,3 +86,12 @@ def mergePDF(writer, type: str, supabase, data):
                 writer.add_page(page)
 
             os.remove(filename)
+
+def select_pdf_template(material_type):
+    templates = {
+        '成果报奖': '成果报奖.pdf',
+        '年度总结': '年度总结.pdf',
+        '职称评定': '职称评定.pdf',
+        '项目结题': '项目结题.pdf'
+    }
+    return templates.get(material_type, None)
