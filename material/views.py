@@ -26,8 +26,6 @@ class SupabaseClientSingleton:
             SupabaseClientSingleton._instance = create_client(SUPABASE_URL, SUPABASE_KEY)
         return SupabaseClientSingleton._instance
 
-
-
 # Create your views here.
 def generateMaterial(request):
     data = json.loads(request.body)
