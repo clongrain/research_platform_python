@@ -1,5 +1,5 @@
 # 使用官方 Python 镜像作为基础镜像
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 # 设置工作目录
 WORKDIR /app
@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 启动 Django 应用
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "Django.wsgi:application"]
