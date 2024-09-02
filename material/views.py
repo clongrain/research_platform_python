@@ -1,13 +1,10 @@
-import io
 import json
-from PyPDF2 import PdfReader, PdfWriter
-from supabase import create_client
 import os
-from dotenv import load_dotenv
+
+from PyPDF2 import PdfReader, PdfWriter
 from django.http import HttpResponse
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfbase.pdfmetrics import stringWidth
-from reportlab.pdfgen import canvas
+from dotenv import load_dotenv
+from supabase import create_client
 
 BUCKET_NAME = 'scientific-management-platform'
 
